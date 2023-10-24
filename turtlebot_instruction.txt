@@ -1,0 +1,16 @@
+On PC 
+ssh bot@192.168.0.213 
+Pwd: turtlebot 
+
+Tutorial: 
+https://emanual.robotis.com/docs/en/platform/turtlebot3/bringup/#bringup 
+
+
+On robot 
+. ~/.bashrc 
+ros2 launch turtlebot3_bringup robot.launch.py 
+
+Install turtlebot 3 on PC 
+ros2 run turtlebot3_teleop teleop_keyboard 
+
+Joystick control the robot -> IR communication with the built in controller 
