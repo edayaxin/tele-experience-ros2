@@ -37,6 +37,13 @@ class MinimalPublisher(Node):
     def timer_callback(self):
         self.speed.linear.x = round(self.speed.linear.x, 4)
         self.speed.angular.z = round(self.speed.angular.z, 4)
+
+        if (self.speed.linear.x >= 0.26): self.speed.linear.x = 0.26
+        if (self.speed.linear.x <= -0.26): self.speed.linear.x = -0.26
+
+        if (self.speed.angular.z >= 1): self.speed.linear.x = 1
+        if (self.speed.angular.z <= -1): self.speed.linear.x = -1
+
         self.publisher.publish(self.speed)
         # self.get_logger().info('Publishing cmd_vel: "%s"' % self.speed)
         self.i += 1
