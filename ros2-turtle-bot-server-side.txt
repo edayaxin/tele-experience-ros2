@@ -1,9 +1,18 @@
 >>>>> On robot <<<<<<
-
+=== Terminal 1 === 
 ssh bot@192.168.1.13
 turtlebot
 ros2 launch turtlebot3_bringup robot.launch.py
 
+=== Terminal 2 === 
+python3 ~/tele-experience-ros2/ros2-bridge/rosbridge_converter.py
+
+=== Terminal 3 === 
+ros2 launch teleop_twist_joy teleop-launch.py
+
+
+
+******* If using Linux ROS *******
 
 >>>>> On PC (connect to the same wifi as the robot) <<<<<<
 === start robot motion controller === (listen both the joystick event and ros bridge)
