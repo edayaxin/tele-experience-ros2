@@ -41,8 +41,8 @@ class MinimalPublisher(Node):
         if (self.speed.linear.x >= 0.26): self.speed.linear.x = 0.26
         if (self.speed.linear.x <= -0.26): self.speed.linear.x = -0.26
 
-        if (self.speed.angular.z >= 1): self.speed.linear.x = 1
-        if (self.speed.angular.z <= -1): self.speed.linear.x = -1
+        if (self.speed.angular.z >= 1): self.speed.angular.z = 1
+        if (self.speed.angular.z <= -1): self.speed.angular.z = -1
 
         self.publisher.publish(self.speed)
         # self.get_logger().info('Publishing cmd_vel: "%s"' % self.speed)
