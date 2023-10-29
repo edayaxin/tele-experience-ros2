@@ -1,0 +1,25 @@
+>>>>> On robot <<<<<<
+
+ssh bot@192.168.1.13
+turtlebot
+ros2 launch turtlebot3_bringup robot.launch.py
+
+
+>>>>> On PC (connect to the same wifi as the robot) <<<<<<
+=== start robot motion controller === (listen both the joystick event and ros bridge)
+. ~/.bashrc
+cd /home/hcilab/git/tele-experience-ros2/ros2-bridge
+python3 rosbridge_converter.py
+
+=== start joystick service ===
+ros2 launch teleop_twist_joy teleop-launch.py
+
+
+>>>>> ON remote PC <<<<<<
+
+=== start joystick service ===
+ros2 launch teleop_twist_joy teleop-launch.py
+
+=== start ros bridge listener/publisher ====
+cd ros2-client
+python connect-ros.py
