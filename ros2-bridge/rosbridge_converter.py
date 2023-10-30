@@ -48,12 +48,11 @@ class MinimalPublisher(Node):
         if (self.speed.angular.z <= -1): self.speed.angular.z = -0.7
 
         self.publisher.publish(self.speed)
-        # self.get_logger().info('Publishing cmd_vel: "%s"' % self.speed)
         self.i += 1
 
     # remote control (joystick or keyboard) callback
     def rosbridge_callback(self, message):
-        self.get_logger().info("receiving ros bridege", message)
+        self.get_logger().info("receiving ros bridege: " + message['data'])
         if (message['data'] == "left_cmd"):
             self.move_left_cmd()
         if (message['data'] == "right_cmd"):
