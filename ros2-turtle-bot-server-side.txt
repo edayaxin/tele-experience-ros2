@@ -7,8 +7,7 @@ ros2 launch turtlebot3_bringup robot.launch.py
 === Terminal 2 === 
 python3 ~/tele-experience-ros2/ros2-bridge/rosbridge_converter.py
 
-=== Terminal 3 === 
-ros2 launch teleop_twist_joy teleop-launch.py
+you can use a w d s x to control the robot's movement
 
 
 

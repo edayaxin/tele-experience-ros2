@@ -5,9 +5,6 @@ from rclpy.node import Node
 from std_msgs.msg import String
 from sensor_msgs.msg import Joy
 
-from pynput import keyboard
-import threading
-
 host='54.90.73.9'
 port=9090
 client = roslibpy.Ros("ws://%s:%d" % (host, port))
@@ -37,10 +34,6 @@ class MinimalPublisher(Node):
         # listen from joystick
         self.joySub = self.create_subscription(Joy, '/joy', self.joy_callback, 10)
         self.joySub
-
-        # listen from keyboard
-        th = threading.Thread(target=self.handle_keyboard)
-        th.start()
 
         self.get_logger().info("ros2 bridge starting on the robot side")
 
@@ -146,35 +139,6 @@ class MinimalPublisher(Node):
         if (message.buttons[1] == 1):  
             self.get_logger().info('Joystick pressed: right slow %s' % message.buttons)
             self.move_right_slow()
-
-
-
-    ### keyboard control ####
-    def on_press(self, key):
-        try:
-            self.get_logger().info('local key {0} pressed'.format(key.char))
-            if (key.char == "w"):
-                self.move_forward()
-            if (key.char == "x"):
-                self.move_backward()
-            if (key.char == "a"):
-                self.move_left()
-            if (key.char == "d"):
-                self.move_right()
-            if (key.char == "s"):
-                self.stop()                
-            
-        except AttributeError:
-            self.get_logger().info('local special key {0} pressed'.format(key))
-            if (str(key) == "Key.up"): self.move_forward()
-            if (str(key) == "Key.down"): self.move_backward()
-            if (str(key) == "Key.left"): self.move_left_slow()
-            if (str(key) == "Key.right"): self.move_right_slow()
-
-    def handle_keyboard(self):
-        with keyboard.Listener(on_press=self.on_press,) as listener:
-            listener.join()
-
 
 rclpy.init()
 speedPublisher = MinimalPublisher()
