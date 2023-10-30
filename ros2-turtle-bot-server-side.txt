@@ -7,6 +7,9 @@ ros2 launch turtlebot3_bringup robot.launch.py
 === Terminal 2 === 
 python3 ~/tele-experience-ros2/ros2-bridge/rosbridge_converter.py
 
+
+>>>>> On Macbook Air <<<<<<
+python3 ~/Desktop/tele-experience-ros2/ros2-bridge/keyboard_control.py
 you can use a w d s x to control the robot's movement
 
 
