@@ -1,4 +1,3 @@
-from __future__ import print_function
 import roslibpy
 from geometry_msgs.msg import Twist 
 import rclpy
@@ -43,6 +42,8 @@ class MinimalPublisher(Node):
         th = threading.Thread(target=self.handle_keyboard)
         th.start()
 
+        self.get_logger().info("ros2 bridge starting on the robot side")
+
     def timer_callback(self):
         self.speed.linear.x = round(self.speed.linear.x, 4)
         self.speed.angular.z = round(self.speed.angular.z, 4)
@@ -59,7 +60,7 @@ class MinimalPublisher(Node):
 
     # remote control (joystick or keyboard) callback
     def rosbridge_callback(self, message):
-        print("receiving ros bridege", message)
+        self.get_logger().info("receiving ros bridege", message)
         if (message['data'] == "left_cmd"):
             self.move_left_cmd()
         if (message['data'] == "right_cmd"):
@@ -153,19 +154,14 @@ class MinimalPublisher(Node):
         try:
             self.get_logger().info('local key {0} pressed'.format(key.char))
             if (key.char == "w"):
-                self.get_logger().info('w pressed: move forward')
                 self.move_forward()
             if (key.char == "x"):
                 self.move_backward()
-                self.get_logger().info('x pressed: right backword')
             if (key.char == "a"):
                 self.move_left()
-                self.get_logger().info('a pressed: move left')
             if (key.char == "d"):
-                self.get_logger().info('d pressed: move right')
                 self.move_right()
             if (key.char == "s"):
-                self.get_logger().info('s pressed: stop')
                 self.stop()                
             
         except AttributeError:
@@ -175,7 +171,7 @@ class MinimalPublisher(Node):
             if (str(key) == "Key.left"): self.move_left_slow()
             if (str(key) == "Key.right"): self.move_right_slow()
 
-    def handle_keyboard_events(self):
+    def handle_keyboard(self):
         with keyboard.Listener(on_press=self.on_press,) as listener:
             listener.join()
 
