@@ -6,6 +6,9 @@ from rclpy.node import Node
 from std_msgs.msg import String
 from sensor_msgs.msg import Joy
 
+from pynput import keyboard
+import threading
+
 host='54.90.73.9'
 port=9090
 client = roslibpy.Ros("ws://%s:%d" % (host, port))
@@ -21,7 +24,9 @@ class MinimalPublisher(Node):
         super().__init__('speedPublisher')
         self.publisher = self.create_publisher(Twist, 'cmd_vel', 10)
         self.speed = Twist()
-        timer_period = 0.1 # seconds
+        timer_period = 0.01 # seconds
+
+        # send speed
         self.timer = self.create_timer(timer_period, self.timer_callback)
         self.i = 0
 
@@ -33,6 +38,10 @@ class MinimalPublisher(Node):
         # listen from joystick
         self.joySub = self.create_subscription(Joy, '/joy', self.joy_callback, 10)
         self.joySub
+
+        # listen from keyboard
+        th = threading.Thread(target=self.handle_keyboard)
+        th.start()
 
     def timer_callback(self):
         self.speed.linear.x = round(self.speed.linear.x, 4)
@@ -115,6 +124,7 @@ class MinimalPublisher(Node):
     def joy_callback(self, message):
         if (message.axes[6] == 1): 
             self.move_left()
+            self.get_logger().info('Joystick pressed: left %f' % self.speed.angular.z)
         if (message.axes[6] == -1):
             self.move_right()
             self.get_logger().info('Joystick pressed: right %f' % self.speed.angular.z)
@@ -135,7 +145,41 @@ class MinimalPublisher(Node):
         if (message.buttons[1] == 1):  
             self.get_logger().info('Joystick pressed: right slow %s' % message.buttons)
             self.move_right_slow()
+
+
+
+    ### keyboard control ####
+    def on_press(self, key):
+        try:
+            self.get_logger().info('local key {0} pressed'.format(key.char))
+            if (key.char == "w"):
+                self.get_logger().info('w pressed: move forward')
+                self.move_forward()
+            if (key.char == "x"):
+                self.move_backward()
+                self.get_logger().info('x pressed: right backword')
+            if (key.char == "a"):
+                self.move_left()
+                self.get_logger().info('a pressed: move left')
+            if (key.char == "d"):
+                self.get_logger().info('d pressed: move right')
+                self.move_right()
+            if (key.char == "s"):
+                self.get_logger().info('s pressed: stop')
+                self.stop()                
             
+        except AttributeError:
+            self.get_logger().info('local special key {0} pressed'.format(key))
+            if (str(key) == "Key.up"): self.move_forward()
+            if (str(key) == "Key.down"): self.move_backward()
+            if (str(key) == "Key.left"): self.move_left_slow()
+            if (str(key) == "Key.right"): self.move_right_slow()
+
+    def handle_keyboard_events(self):
+        with keyboard.Listener(on_press=self.on_press,) as listener:
+            listener.join()
+
+
 rclpy.init()
 speedPublisher = MinimalPublisher()
 rclpy.spin(speedPublisher)
