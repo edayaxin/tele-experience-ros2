@@ -78,10 +78,10 @@ class MinimalPublisher(Node):
     
     def move_left(self):
         self.get_logger().info('Go left %f' % self.speed.angular.z )
-        self.speed.angular.z = min(self.speed.angular.z + 0.05, 1)
+        self.speed.angular.z = min(self.speed.angular.z + 0.05, 0.7)
     def move_right(self):
         self.get_logger().info('Go right %f' % self.speed.angular.z )
-        self.speed.angular.z = max(self.speed.angular.z - 0.05, -1)
+        self.speed.angular.z = max(self.speed.angular.z - 0.05, -0.7)
     def move_forward(self):
         self.get_logger().info('Go forward %f' % self.speed.linear.x)
         self.speed.linear.x = min(self.speed.linear.x + 0.01, 0.26)
@@ -91,11 +91,11 @@ class MinimalPublisher(Node):
 
     def move_left_slow(self):
         self.get_logger().info('Go left slow %f' % self.speed.angular.z )
-        self.speed.angular.z = min(self.speed.angular.z + 0.01, 0.7)
+        self.speed.angular.z = min(self.speed.angular.z + 0.01, 0.4)
 
     def move_right_slow(self):
         self.get_logger().info('Go right slow %f' % self.speed.angular.z )
-        self.speed.angular.z = max(self.speed.angular.z - 0.01, -0.7)
+        self.speed.angular.z = max(self.speed.angular.z - 0.01, -0.4)
 
     def move_left_cmd(self):
         # self.speed.linear.x = 0
