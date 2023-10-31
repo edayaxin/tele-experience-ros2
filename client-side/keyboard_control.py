@@ -24,7 +24,8 @@ def on_press(key):
             rosbridge_pub.publish(roslibpy.Message({'data': 'left_joy'}))
         if (key.char == "d"):
             rosbridge_pub.publish(roslibpy.Message({'data': 'right_joy'}))
-        if (key.char == "s"):
+        if (key.char == "`"):
+            print("pressed stop")
             rosbridge_pub.publish(roslibpy.Message({'data': 'stop'}))
             
         
@@ -39,10 +40,10 @@ def on_press(key):
             rosbridge_pub.publish(roslibpy.Message({'data': 'backward_joy'}))
         if (str(key) == "Key.left"):
             print('pressed key left')
-            rosbridge_pub.publish(roslibpy.Message({'data': 'left_slow'}))
+            rosbridge_pub.publish(roslibpy.Message({'data': 'left_joy'}))
         if (str(key) == "Key.right"):
             print('pressed key right')
-            rosbridge_pub.publish(roslibpy.Message({'data': 'right_slow'}))
+            rosbridge_pub.publish(roslibpy.Message({'data': 'right_joy'}))
 
  
 # ros = roslibpy.Ros(host='localhost', port=9090)
